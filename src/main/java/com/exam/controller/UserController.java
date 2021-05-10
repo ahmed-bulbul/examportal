@@ -1,11 +1,12 @@
 package com.exam.controller;
 
-
+import com.exam.helper.UserNotFoundException;
 import com.exam.model.Role;
 import com.exam.model.User;
 import com.exam.model.UserRole;
 import com.exam.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -44,12 +45,19 @@ public class UserController {
         return this.userService.getUser(username);
     }
 
+    //update user
+
     //delete user by id
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable("userId") Long userId){
         this.userService.deleteUser(userId);
     }
 
-    //update user
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<?> exceptionHandler(UserNotFoundException ex){
+        return ResponseEntity.ok("User Not Found !!") ;
+    }
+
+
 
 }
